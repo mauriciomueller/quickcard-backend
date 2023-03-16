@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware(['api'])->group(function () {
+Route::middleware(['api'])->prefix('v1')->group(function () {
     Route::post('/generateQRCodeImage', GenerateQRCodeImageController::class)->name('generateQRCodeImage.store');
 });
 
