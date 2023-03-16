@@ -26,10 +26,32 @@ class UserQueryCardService
         return $userQueryCard;
     }
 
-    public function generateQrCode(string $url): string
+    public function generateQrCodeAsPNG(string $url): string
     {
         try {
-            $qrCode = QrCode::format('svg')->size(200)->generate($url);
+            $qrCode = $this->generateQrCode($url, 'png');
+        } catch (Exception $e) {
+            throw new QRCodeGenerationException('Error generating QR code');
+        }
+
+        return $qrCode;
+    }
+
+    public function generateQrCodeAsSVG(string $url): string
+    {
+        try {
+            $qrCode = $this->generateQrCode($url, 'svg');
+        } catch (Exception $e) {
+            throw new QRCodeGenerationException('Error generating QR code');
+        }
+
+        return $qrCode;
+    }
+
+    private function generateQrCode(string $url, string $format): string
+    {
+        try {
+            $qrCode = 'data:image/png;base64,' . base64_encode(QrCode::format('png')->size(200)->generate($url));
         } catch (Exception $e) {
             throw new QRCodeGenerationException('Error generating QR code');
         }

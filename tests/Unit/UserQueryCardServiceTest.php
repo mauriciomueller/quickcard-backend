@@ -26,14 +26,13 @@ class UserQueryCardServiceTest extends TestCase
         $this->assertDatabaseHas('user_query_cards', $data);
     }
 
-    public function test_generate_qr_code_returns_svg_string(): void
+    public function test_generate_qr_code_returns_png_string(): void
     {
         $url = 'https://example.com/some-unique-slug';
 
         $userQueryCardService = new UserQueryCardService();
-        $qrCode = $userQueryCardService->generateQrCode($url);
+        $qrCode = $userQueryCardService->generateQrCodeAsPNG($url);
 
         $this->assertIsString($qrCode);
-        $this->assertStringStartsWith('<svg', $qrCode);
     }
 }

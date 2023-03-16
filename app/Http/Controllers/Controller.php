@@ -40,4 +40,11 @@ class Controller extends BaseController
             'Content-Type' => 'image/svg+xml',
         ]);
     }
+
+    public function sendPNGResponse(string $png, string $message = '', int $code = 200): Response
+    {
+        return response($png, $code, [
+            'Content-Type' => 'image/png',
+        ]);
+    }
 }

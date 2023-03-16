@@ -18,7 +18,7 @@ class GenerateQRCodeImageController extends Controller
 
             $qrCodeUrl = url($userQueryCard->slug);
 
-            $qrCode = $userQueryCardService->generateQrCode($qrCodeUrl);
+            $qrCode = $userQueryCardService->generateQrCodeAsPNG($qrCodeUrl);
 
         } catch (DatabaseException $e) {
             return $this->sendErrorResponse(message: 'An internal server error occurred', code: 500);
@@ -26,6 +26,6 @@ class GenerateQRCodeImageController extends Controller
             return $this->sendErrorResponse(message: 'An error occurred while generating the QR code', code: 500);
         }
 
-        return $this->sendSVGResponse($qrCode);
+        return $this->sendPNGResponse($qrCode);
     }
 }
