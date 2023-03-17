@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\UserQueryCard;
+use App\Models\UserQuickCard;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,6 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        UserQueryCard::factory(10)->create();
+        UserQuickCard::factory(10)->create();
     }
 }

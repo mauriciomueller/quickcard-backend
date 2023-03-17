@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_query_cards', function (Blueprint $table) {
+        Schema::create('user_quick_cards', function (Blueprint $table) {
             $table->id();
             $table->string('username');
             $table->string('linkedin_url');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_query_cards');
+        Schema::dropIfExists('user_quick_cards');
     }
 };

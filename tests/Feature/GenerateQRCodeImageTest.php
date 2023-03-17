@@ -8,7 +8,6 @@ class GenerateQRCodeImageTest extends TestCase
 {
     use RefreshDatabase;
 
-
     public function test_generate_qr_code_image_returns_png(): void
     {
         $data = [

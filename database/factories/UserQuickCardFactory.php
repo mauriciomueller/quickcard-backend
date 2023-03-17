@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\UserQueryCard;
+use App\Models\UserQuickCard;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class UserQueryCardFactory extends Factory
+class UserQuickCardFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = UserQueryCard::class;
+    protected $model = UserQuickCard::class;
 
     public function definition(): array
     {
@@ -22,7 +22,7 @@ class UserQueryCardFactory extends Factory
 
         $uniqueSlug = $slug;
         $counter = 1;
-        while (UserQueryCard::where('slug', $uniqueSlug)->exists()) {
+        while (UserQuickCard::where('slug', $uniqueSlug)->exists()) {
             $uniqueSlug = $slug . '-' . $counter;
             $counter++;
         }
