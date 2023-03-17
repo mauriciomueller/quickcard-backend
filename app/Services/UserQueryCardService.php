@@ -29,7 +29,7 @@ class UserQueryCardService
     public function generateQrCodeAsPNG(string $url): string
     {
         try {
-            $qrCode = $this->generateQrCode($url, 'png');
+            $qrCode = 'data:image/png;base64,' . base64_encode($this->generateQrCode($url, 'png'));
         } catch (Exception $e) {
             throw new QRCodeGenerationException('Error generating QR code');
         }
@@ -51,7 +51,7 @@ class UserQueryCardService
     private function generateQrCode(string $url, string $format): string
     {
         try {
-            $qrCode = 'data:image/png;base64,' . base64_encode(QrCode::format('png')->size(200)->generate($url));
+            $qrCode = QrCode::format($format)->size(200)->generate($url);
         } catch (Exception $e) {
             throw new QRCodeGenerationException('Error generating QR code');
         }

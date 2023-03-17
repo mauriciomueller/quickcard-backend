@@ -11,6 +11,14 @@ class UserQueryCardServiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    private UserQueryCardService $userQueryCardService;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->userQueryCardService = new UserQueryCardService(/* constructor parameters if needed */);
+    }
+
     public function test_create_user_query_card_creates_and_returns_user_query_card(): void
     {
         $data = [
@@ -19,20 +27,21 @@ class UserQueryCardServiceTest extends TestCase
             'gitHubUrl' => 'https://github.com/johndoe',
         ];
 
-        $userQueryCardService = new UserQueryCardService();
-        $userQueryCard = $userQueryCardService->createUserQueryCard($data);
+        $userQueryCard = $this->userQueryCardService->createUserQueryCard($data);
 
         $this->assertInstanceOf(UserQueryCard::class, $userQueryCard);
-        $this->assertDatabaseHas('user_query_cards', $data);
+        $this->assertEquals($data['username'], $userQueryCard->username);
+        $this->assertEquals($data['linkedInUrl'], $userQueryCard->linkedin_url);
+        $this->assertEquals($data['gitHubUrl'], $userQueryCard->github_url);
     }
 
-    public function test_generate_qr_code_returns_png_string(): void
+    public function test_generate_qr_code_returns_svg_string(): void
     {
         $url = 'https://example.com/some-unique-slug';
 
-        $userQueryCardService = new UserQueryCardService();
-        $qrCode = $userQueryCardService->generateQrCodeAsPNG($url);
+        $qrCode = $this->userQueryCardService->generateQrCodeAsSVG($url);
 
         $this->assertIsString($qrCode);
+        $this->assertStringContainsString('<svg', $qrCode);
     }
 }

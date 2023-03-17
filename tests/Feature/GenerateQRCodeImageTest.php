@@ -9,7 +9,7 @@ class GenerateQRCodeImageTest extends TestCase
     use RefreshDatabase;
 
 
-    public function test_generate_qr_code_image_returns_svg(): void
+    public function test_generate_qr_code_image_returns_png(): void
     {
         $data = [
             'username' => 'John Doe',
@@ -19,8 +19,7 @@ class GenerateQRCodeImageTest extends TestCase
 
         $this->post(Route('generateQRCodeImage.store'), $data)
             ->assertStatus(200)
-            ->assertHeader('Content-Type', 'image/svg+xml')
-            ->assertSee('<svg', false);
+            ->assertHeader('Content-Type', 'image/png');
     }
     public function test_generate_qr_code_image_with_long_username_fails(): void
     {

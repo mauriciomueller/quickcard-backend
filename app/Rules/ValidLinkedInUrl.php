@@ -16,7 +16,7 @@ class ValidLinkedInUrl implements ValidationRule
     {
         $pattern = '/^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+$/';
         if (!preg_match($pattern, $value)) {
-            $fail('The :attribute must be a valid LinkedIn URL.');
+            $fail('Your LinkedIn URL is invalid.');
         }
     }
 }
