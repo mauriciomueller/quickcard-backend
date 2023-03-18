@@ -10,12 +10,16 @@ class UserQuickCardController extends Controller
 {
     public function __invoke(string $slug): JsonResponse
     {
-        $userQuickCard = UserQuickCard::where('slug', $slug)->first();
+        try {
+            $userQuickCard = UserQuickCard::where('slug', $slug)->first();
 
-        return $this->sendResponse([
-            'username' => $userQuickCard->username,
-            'linkedin_url' => $userQuickCard->linkedin_url,
-            'github_url' => $userQuickCard->github_url,
-        ], 'User quick card successfully retrieved.');
+            return $this->sendResponse([
+                'username' => $userQuickCard->username,
+                'linkedin_url' => $userQuickCard->linkedin_url,
+                'github_url' => $userQuickCard->github_url,
+            ], 'User quick card successfully retrieved.');
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse('Error retrieving user quick card.');
+        }
     }
 }
