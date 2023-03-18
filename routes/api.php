@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\GenerateQRCodeImageController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserQuickCardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware(['api'])->prefix('v1')->group(function () {
-    Route::post('/generateQRCodeImage', GenerateQRCodeImageController::class)->name('generateQRCodeImage.store');
+    Route::post('/generate-qr-code-image', GenerateQRCodeImageController::class)
+        ->name('generate_qr_code_image.store');
+
+    Route::get('/user-quick-card/{slug}', UserQuickCardController::class)
+        ->name('user_quick_card.index')
+        ->where('slug', '[a-zA-Z0-9-_]+');;
 });
 

@@ -14,7 +14,7 @@ class ValidGitHubUrl implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $pattern = '/^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+$/';
+        $pattern = '/^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$/';
         if (!preg_match($pattern, $value)) {
             $fail('Your GitHub URL is invalid.');
         }

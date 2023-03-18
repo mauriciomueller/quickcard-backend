@@ -24,7 +24,7 @@ class GenerateQRCodeImageRequest extends CustomFormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|string|max:50',
+            'username' => 'required|string|min:3|max:50',
             'linkedInUrl' => ['required', 'url', new ValidLinkedInUrl(), 'max:150'],
             'gitHubUrl' => ['required', 'url', new ValidGitHubUrl(), 'max:150'],
         ];

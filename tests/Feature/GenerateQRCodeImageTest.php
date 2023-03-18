@@ -8,15 +8,24 @@ class GenerateQRCodeImageTest extends TestCase
 {
     use RefreshDatabase;
 
+    private string $route;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->route = Route('generate_qr_code_image.store');
+    }
+
     public function test_generate_qr_code_image_returns_png(): void
     {
         $data = [
             'username' => 'John Doe',
-            'linkedInUrl' => 'https://www.linkedin.com/in/johndoe',
+            'linkedInUrl' => 'https://linkedin.com/in/johndoe',
             'gitHubUrl' => 'https://github.com/johndoe',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(200)
             ->assertHeader('Content-Type', 'image/png');
     }
@@ -28,7 +37,7 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => 'https://github.com/johndoe',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(422);
     }
 
@@ -40,7 +49,7 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => 'https://github.com/johndoe',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(422);
     }
 
@@ -52,7 +61,7 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => 'https://github.com/' . str_repeat('a', 151),
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(422); // Validation error
     }
 
@@ -65,7 +74,20 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => 'https://github.com/johndoe',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+    }
+
+    public function test_generate_qr_code_image_with_username_less_than_3_characters_fails(): void
+    {
+        $data = [
+            'username' => 'Ab',
+            'linkedInUrl' => 'https://www.linkedin.com/in/johndoe',
+            'gitHubUrl' => 'https://github.com/johndoe',
+        ];
+
+        $this->post($this->route, $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors('username');
     }
@@ -78,7 +100,7 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => 'https://github.com/johndoe',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors('linkedInUrl');
     }
@@ -91,12 +113,25 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => '',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors('gitHubUrl');
     }
 
-    public function test_generate_qr_code_image_with_invalid_linkedin_url_fails(): void
+    public function test_generate_qr_code_image_with_invalid_linkedin_domain_fails(): void
+    {
+        $data = [
+            'username' => 'John Doe',
+            'linkedInUrl' => 'https://invalid.com/in/johndoe',
+            'gitHubUrl' => 'https://github.com/johndoe',
+        ];
+
+        $this->post($this->route, $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['linkedInUrl']);
+    }
+
+    public function test_generate_qr_code_image_with_invalid_linkedin_path_fails(): void
     {
         $data = [
             'username' => 'John Doe',
@@ -104,12 +139,12 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => 'https://github.com/johndoe',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['linkedInUrl']);
     }
 
-    public function test_generate_qr_code_image_with_invalid_github_url_fails(): void
+    public function test_generate_qr_code_image_with_invalid_github_domain_fails(): void
     {
         $data = [
             'username' => 'John Doe',
@@ -117,7 +152,7 @@ class GenerateQRCodeImageTest extends TestCase
             'gitHubUrl' => 'https://gitlab.com/johndoe',
         ];
 
-        $this->post(Route('generateQRCodeImage.store'), $data)
+        $this->post($this->route, $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['gitHubUrl']);
     }
